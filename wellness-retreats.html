@@ -18,6 +18,110 @@
             --shadow: rgba(26, 58, 46, 0.1);
         }
 
+	/* Custom Confirm Modal */
+.custom-confirm-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 58, 46, 0.45);
+    backdrop-filter: blur(6px);
+    z-index: 9000;
+    align-items: center;
+    justify-content: center;
+}
+.custom-confirm-overlay.active { display: flex; }
+
+.custom-confirm-box {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 2.8rem 2.5rem 2.2rem;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 24px 64px rgba(26, 58, 46, 0.22);
+    animation: confirmSlideIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes confirmSlideIn {
+    from { opacity: 0; transform: translateY(24px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.custom-confirm-icon {
+    width: 62px;
+    height: 62px;
+    background: linear-gradient(135deg, #e8f5f0, #d4ede4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.4rem;
+    font-size: 1.7rem;
+}
+.custom-confirm-box h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem;
+    font-weight: 500;
+    color: #1a3a2e;
+    margin-bottom: 0.55rem;
+}
+.custom-confirm-box p {
+    font-size: 0.92rem;
+    color: #7a9b8a;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+.custom-confirm-actions {
+    display: flex;
+    gap: 0.9rem;
+    justify-content: center;
+}
+.custom-confirm-actions button {
+    flex: 1;
+    max-width: 160px;
+    padding: 0.85rem 1.2rem;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+.btn-cancel-confirm { background: #f4f1ea; color: #1a3a2e; }
+.btn-cancel-confirm:hover { background: #e8dcc8; }
+.btn-signout-confirm {
+    background: linear-gradient(135deg, #2d5445, #1a3a2e);
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(26,58,46,0.25);
+}
+.btn-signout-confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26,58,46,0.35);
+}
+
+/* Toast */
+.wellness-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(30px);
+    background: linear-gradient(135deg, #1a3a2e, #2d5445);
+    color: #ffffff;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    box-shadow: 0 8px 32px rgba(26,58,46,0.3);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+    white-space: nowrap;
+}
+.wellness-toast.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
         * {
             margin: 0;
             padding: 0;
@@ -1384,6 +1488,25 @@
         .social-btn { display: flex; align-items: center; justify-content: center; gap: 0.75rem; padding: 0.9rem 1.5rem; border: 2px solid var(--cream); border-radius: 8px; background: white; font-family: 'Montserrat', sans-serif; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: all 0.3s; }
         .social-btn:hover { background: var(--cream); border-color: var(--sage); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .social-btn svg { flex-shrink: 0; }
+	.forgot-password-link {
+    display: block;
+    text-align: right;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+}
+
+.forgot-password-link a {
+    color: var(--sage);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.forgot-password-link a:hover {
+    color: var(--forest-dark);
+    text-decoration: underline;
+}
+
         .google-btn { color: #333; }
         .facebook-btn { color: #1877F2; }
         
@@ -2990,6 +3113,11 @@
                             </button>
                         </div>
                     </div>
+                    
+                    <div class="forgot-password-link">
+                        <a href="#" onclick="alert('Password reset link will be sent to your email'); return false;">Forgot Password?</a>
+                    </div>
+                    
                     <button type="submit" class="btn btn-primary" style="width:100%">Login</button>
                 </form>
             </div>
@@ -3518,6 +3646,26 @@
             © 2026 Wellness Retreats. All rights reserved.
         </div>
     </footer>
+
+<!-- Custom Sign-Out Confirm Modal -->
+<div class="custom-confirm-overlay" id="custom-confirm-modal">
+    <div class="custom-confirm-box">
+        <div class="custom-confirm-icon">🍃</div>
+        <h3>Sign Out</h3>
+        <p id="custom-confirm-message">We hope to see you again soon.</p>
+        <div class="custom-confirm-actions">
+            <button class="btn-cancel-confirm" onclick="closeCustomConfirm()">Stay</button>
+            <button class="btn-signout-confirm" onclick="confirmLogout()">Sign Out</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="wellness-toast" id="wellness-toast">
+    <span id="wellness-toast-msg"></span>
+</div>
+
+
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
@@ -4522,9 +4670,9 @@ Remember: You're here to guide their wellness journey with genuine care and expe
                 localStorage.setItem('wellnessCurrentUser', JSON.stringify(user));
                 updateUserGreeting();
                 closeAuthModal();
-                alert('Welcome back, ' + user.name + '!');
+                showToast('Welcome back, ' + user.name + '! 🌿');
             } else {
-                alert('Invalid email or password');
+                showToast('Invalid email or password. Please try again.');
             }
         }
 
@@ -4537,9 +4685,26 @@ Remember: You're here to guide their wellness journey with genuine care and expe
             const users = JSON.parse(localStorage.getItem('wellnessUsers') || '[]');
             
             if (users.find(u => u.email === email)) {
-                alert('Email already registered');
+                showToast('This email is already registered. Please log in.');
                 return;
             }
+
+	function updateUserGreeting() {
+    const user = JSON.parse(localStorage.getItem('wellnessCurrentUser') || 'null');
+    const greeting = document.getElementById('user-greeting');
+    const authLink = document.getElementById('auth-link');
+
+    if (user) {
+        greeting.textContent = user.name;
+        authLink.onclick = () => {
+            showLogoutConfirm(user.name);
+            return false;
+        };
+    } else {
+        greeting.textContent = 'Login';
+        authLink.onclick = () => { openAuthModal(); return false; };
+    }
+}
             
             const newUser = { name, email, password };
             users.push(newUser);
@@ -4548,31 +4713,56 @@ Remember: You're here to guide their wellness journey with genuine care and expe
             
             updateUserGreeting();
             closeAuthModal();
-            alert('Welcome, ' + name + '!');
+            showToast('Welcome to Wellness Retreats, ' + name + '! 🌸');
         }
 
-        function updateUserGreeting() {
-            const user = JSON.parse(localStorage.getItem('wellnessCurrentUser') || 'null');
-            const greeting = document.getElementById('user-greeting');
-            const authLink = document.getElementById('auth-link');
-            
-            if (user) {
-                greeting.textContent = user.name;
-                authLink.onclick = () => { 
-                    if (confirm('Logout?')) {
-                        localStorage.removeItem('wellnessCurrentUser');
-                        updateUserGreeting();
-                        alert('Logged out successfully');
-                    }
-                    return false;
-                };
-            } else {
-                greeting.textContent = 'Login';
-                authLink.onclick = () => { openAuthModal(); return false; };
-            }
-        }
+        
+function showLogoutConfirm(userName) {
+    const modal = document.getElementById('custom-confirm-modal');
+    document.getElementById('custom-confirm-message').textContent = 'We hope to see you again soon, ' + userName + '.';
+    modal.classList.add('active');
+}
 
-        // Check auth on page load
+function closeCustomConfirm() {
+    document.getElementById('custom-confirm-modal').classList.remove('active');
+}
+
+function confirmLogout() {
+    closeCustomConfirm();
+    localStorage.removeItem('wellnessCurrentUser');
+    updateUserGreeting();
+    showToast("You've been signed out. Namaste 🙏");
+}
+
+function showToast(message) {
+    const toast = document.getElementById('wellness-toast');
+    document.getElementById('wellness-toast-msg').textContent = message;
+    toast.classList.add('active');
+    setTimeout(() => toast.classList.remove('active'), 3500);
+}
+		
+
+function updateUserGreeting() {
+    const user = JSON.parse(localStorage.getItem('wellnessCurrentUser') || 'null');
+    const greeting = document.getElementById('user-greeting');
+    const authLink = document.getElementById('auth-link');
+
+    if (user) {
+        greeting.textContent = user.name;
+        authLink.onclick = () => {
+            showLogoutConfirm(user.name);
+            return false;
+        };
+    } else {
+        greeting.textContent = 'Login';
+        authLink.onclick = () => { openAuthModal(); return false; };
+    }
+}
+
+// Check auth on page load
+updateUserGreeting();        
+
+
         // Check auth on page load
         updateUserGreeting();
 
@@ -4731,21 +4921,20 @@ document.getElementById('detail-currency').value = currentCurrency; // Add this 
 
         // Password Toggle Function
         function togglePassword(inputId, button) {
-            const input = document.getElementById(inputId);
-            const showIcon = button.querySelector('.show-icon');
-            const hideIcon = button.querySelector('.hide-icon');
-            
-            if (input.type === 'password') {
-                input.type = 'text';
-                showIcon.style.display = 'none';
-                hideIcon.style.display = 'none';
-            } else {
-                input.type = 'password';
-                showIcon.style.display = 'inline';
-                hideIcon.style.display = 'none';
-            }
-        }
-
+    const input = document.getElementById(inputId);
+    const showIcon = button.querySelector('.show-icon');
+    const hideIcon = button.querySelector('.hide-icon');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        showIcon.style.display = 'none';
+        hideIcon.style.display = 'inline';
+    } else {
+        input.type = 'password';
+        showIcon.style.display = 'inline';
+        hideIcon.style.display = 'none';
+    }
+}
 // ── Testimonials Carousel ──
 const testimonialsTrack = document.getElementById('testimonials-track');
 const prevBtn = document.getElementById('testimonials-prev');
