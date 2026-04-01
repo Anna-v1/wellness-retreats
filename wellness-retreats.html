@@ -1522,13 +1522,16 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 3rem;
+    align-items: start;
+    height: calc(100vh - 140px);
 }
 
         .filter-sidebar {
     background: rgba(244, 241, 234, 0.6);
     padding: 2rem 1.5rem;
     border-radius: 12px;
-    height: fit-content;
+    height: 100%;
+    overflow-y: auto;
     position: sticky;
     top: 120px;
     backdrop-filter: blur(10px);
@@ -1791,9 +1794,11 @@
         }
 
         .listings-content {
-            flex: 1;
-            min-width: 0;
-        }
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    overflow-y: auto;
+}
 
 	/* Wishlist */
         .wishlist-toggle { position: fixed; right: 2rem; bottom: 8rem; background: linear-gradient(135deg, #e74c3c, #c0392b); color: var(--white); border: none; border-radius: 50%; width: 64px; height: 64px; font-size: 0; cursor: pointer; box-shadow: 0 4px 20px rgba(231,76,60,0.4); z-index: 999; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
@@ -2744,11 +2749,11 @@
         <div class="listings-header">
             <h2>Discover Wellness Experiences</h2>
             <div class="category-tabs">
-                <button class="category-tab active" onclick="filterByCategory('all')">All Experiences</button>
-                <button class="category-tab" onclick="filterByCategory('Wellness Retreat')">Wellness Retreats</button>
-                <button class="category-tab" onclick="filterByCategory('Wellness Resort')">Wellness Resorts</button>
-                <button class="category-tab" onclick="filterByCategory('Offbeat Stay')">Offbeat Stays</button>
-            </div>
+    <button class="category-tab active" onclick="filterByCategory('all')"><span class="tab-icon">✨</span> All Experiences</button>
+    <button class="category-tab" onclick="filterByCategory('Wellness Retreat')"><span class="tab-icon">🌿</span> Wellness Retreats</button>
+    <button class="category-tab" onclick="filterByCategory('Wellness Resort')"><span class="tab-icon">🏨</span> Wellness Resorts</button>
+    <button class="category-tab" onclick="filterByCategory('Offbeat Stay')"><span class="tab-icon">🏕️</span> Offbeat Stays</button>
+</div>
         </div>
 
         <!-- MAIN CONTAINER with sidebar + listings -->
@@ -3631,7 +3636,7 @@
     Instagram
 </a>
 
-		<a href="#">
+		<a href="https://www.facebook.com/profile.php?id=61572828520772" target="_blank" rel="noopener noreferrer">
                     <span style="display: inline-block; margin-right: 0.5rem;">👥</span>Facebook
                 </a>
                 <a href="mailto:wellnessretreats.in@gmail.com">
@@ -3720,253 +3725,26 @@ function changeCurrency() {
     renderListings(currentListings);
 }
         // Listings Data - Real Indian Wellness Destinations
-        const listings = [
-            {
-                id: 1,
-                name: "Ananda in the Himalayas",
-                location: "Uttarakhand",
-                state: "Uttarakhand",
-                description: "A destination spa estate set in a 100-acre Maharaja's palace overlooking the Ganges, offering traditional Ayurveda, Yoga, and Vedanta.",
-                price: 85000,
-                type: "Resort",
-                category: "Wellness Resort",
-                wellness: ["Yoga & Meditation", "Ayurveda & Spa", "Detox & Naturopathy"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'><defs><linearGradient id='sky1' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' style='stop-color:%237a9b8a'/><stop offset='100%' style='stop-color:%23e8dcc8'/></linearGradient></defs><rect fill='url(%23sky1)' width='800' height='600'/><path d='M0,400 L200,250 L400,300 L600,200 L800,280 L800,600 L0,600 Z' fill='%231a3a2e' opacity='0.8'/><path d='M0,420 L250,320 L450,350 L650,280 L800,340 L800,600 L0,600 Z' fill='%232d5445' opacity='0.6'/><circle cx='650' cy='120' r='80' fill='%23f4f1ea' opacity='0.7'/><rect x='300' y='380' width='200' height='150' fill='%238b6f47' opacity='0.4'/><polygon points='400,380 300,380 350,320' fill='%23c9a961' opacity='0.5'/></svg>",
-                badge: "Luxury"
-            },
-            {
-                id: 2,
-                name: "Shreyas Yoga Retreat",
-                location: "Bangalore, Karnataka",
-                state: "Karnataka",
-                description: "An award-winning silent retreat offering authentic yoga, meditation, and Ayurvedic cuisine in a tranquil farm setting.",
-                price: 42000,
-                type: "Retreat",
-                category: "Wellness Retreat",
-                wellness: ["Yoga & Meditation", "Ayurveda & Spa"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g2' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' style='stop-color:%238b6f47'/><stop offset='100%' style='stop-color:%237a9b8a'/></linearGradient></defs><rect fill='url(%23g2)' width='600' height='400'/><rect x='100' y='150' width='400' height='200' fill='%23f4f1ea' opacity='0.2'/><circle cx='300' cy='150' r='80' fill='%23c9a961' opacity='0.3'/></svg>",
-                badge: "Silent Retreat"
-            },
-            {
-                id: 3,
-                name: "Vana Malsi Estate",
-                location: "Dehradun, Uttarakhand",
-                state: "Uttarakhand",
-                description: "A wellness retreat offering Tibetan, Ayurvedic, and naturopathic healing programs amidst a sal forest near the Himalayas.",
-                price: 78000,
-                type: "Wellness Center",
-                category: "Wellness Resort",
-                wellness: ["Yoga & Meditation", "Ayurveda & Spa", "Detox & Naturopathy"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g3' x1='0%' y1='0%' x2='100%' y2='0%'><stop offset='0%' style='stop-color:%231a3a2e'/><stop offset='50%' style='stop-color:%237a9b8a'/><stop offset='100%' style='stop-color:%231a3a2e'/></linearGradient></defs><rect fill='url(%23g3)' width='600' height='400'/><circle cx='150' cy='200' r='100' fill='%238b6f47' opacity='0.2'/><circle cx='450' cy='200' r='100' fill='%238b6f47' opacity='0.2'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23f4f1ea' font-family='serif' font-size='24' opacity='0.6'>Forest Healing</text></svg>",
-                badge: "Premium"
-            },
-            {
-                id: 4,
-                name: "SwaSwara",
-                location: "Gokarna, Karnataka",
-                state: "Karnataka",
-                description: "A CGH Earth property offering yoga, Ayurveda, and art therapy overlooking pristine Om Beach in a serene coastal setting.",
-                price: 38000,
-                type: "Resort",
-                category: "Wellness Resort",
-                wellness: ["Yoga & Meditation", "Ayurveda & Spa"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g4' x1='0%' y1='100%' x2='0%' y2='0%'><stop offset='0%' style='stop-color:%237a9b8a'/><stop offset='100%' style='stop-color:%23e8dcc8'/></linearGradient></defs><rect fill='url(%23g4)' width='600' height='400'/><ellipse cx='300' cy='350' rx='250' ry='80' fill='%232d5445' opacity='0.3'/><circle cx='100' cy='100' r='40' fill='%23c9a961' opacity='0.4'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%232d5445' font-family='serif' font-size='24' opacity='0.6'>Coastal Serenity</text></svg>",
-                badge: "Beachfront"
-            },
-            {
-                id: 5,
-                name: "Atmantan Wellness Centre",
-                location: "Pune, Maharashtra",
-                state: "Maharashtra",
-                description: "A holistic wellness destination offering medical wellness programs combining Eastern and Western healing modalities.",
-                price: 55000,
-                type: "Wellness Center",
-                category: "Wellness Resort",
-                wellness: ["Yoga & Meditation", "Detox & Naturopathy", "Ayurveda & Spa"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g5' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%238b6f47'/><stop offset='100%' style='stop-color:%232d5445'/></linearGradient></defs><rect fill='url(%23g5)' width='600' height='400'/><rect x='150' y='100' width='300' height='200' fill='%23f4f1ea' opacity='0.15' rx='10'/><circle cx='300' cy='200' r='60' fill='%23c9a961' opacity='0.3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23f4f1ea' font-family='serif' font-size='24' opacity='0.6'>Holistic Wellness</text></svg>",
-                badge: "Medical"
-            },
-            {
-                id: 6,
-                name: "Kalari Kovilakom",
-                location: "Palakkad, Kerala",
-                state: "Kerala",
-                description: "A 19th-century palace offering authentic Ayurvedic healing in the foothills of the Palakkad hills, known for traditional panchakarma.",
-                price: 68000,
-                type: "Resort",
-                category: "Wellness Retreat",
-                wellness: ["Ayurveda & Spa", "Detox & Naturopathy", "Yoga & Meditation"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g6' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' style='stop-color:%231a3a2e'/><stop offset='100%' style='stop-color:%237a9b8a'/></linearGradient></defs><rect fill='url(%23g6)' width='600' height='400'/><polygon points='300,80 400,200 200,200' fill='%238b6f47' opacity='0.3'/><rect x='250' y='200' width='100' height='150' fill='%23f4f1ea' opacity='0.2'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23f4f1ea' font-family='serif' font-size='24' opacity='0.6'>Palace Ayurveda</text></svg>",
-                badge: "Heritage"
-            },
-            {
-                id: 7,
-                name: "The Serai Chikmagalur",
-                location: "Chikmagalur, Karnataka",
-                state: "Karnataka",
-                description: "A luxury wellness resort in coffee plantation country offering spa therapies, yoga, and nature immersion experiences.",
-                price: 32000,
-                type: "Resort",
-                category: "Offbeat Stay",
-                wellness: ["Yoga & Meditation", "Ayurveda & Spa"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g7' x1='0%' y1='0%' x2='100%' y2='0%'><stop offset='0%' style='stop-color:%237a9b8a'/><stop offset='100%' style='stop-color:%238b6f47'/></linearGradient></defs><rect fill='url(%23g7)' width='600' height='400'/><circle cx='200' cy='150' r='60' fill='%232d5445' opacity='0.2'/><circle cx='400' cy='250' r='80' fill='%232d5445' opacity='0.2'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23f4f1ea' font-family='serif' font-size='24' opacity='0.6'>Coffee Estate</text></svg>",
-                badge: "Plantation"
-            },
-            {
-                id: 8,
-                name: "Nimba Nature Cure Village",
-                location: "Mehsana, Gujarat",
-                state: "Gujarat",
-                description: "India's largest naturopathy center offering comprehensive detox and healing programs using natural therapies and organic nutrition.",
-                price: 18000,
-                type: "Wellness Center",
-                category: "Wellness Retreat",
-                wellness: ["Detox & Naturopathy", "Yoga & Meditation"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g8' x1='0%' y1='100%' x2='0%' y2='0%'><stop offset='0%' style='stop-color:%232d5445'/><stop offset='100%' style='stop-color:%23e8dcc8'/></linearGradient></defs><rect fill='url(%23g8)' width='600' height='400'/><path d='M0,250 Q150,200 300,250 T600,250 L600,400 L0,400 Z' fill='%237a9b8a' opacity='0.3'/><circle cx='300' cy='150' r='50' fill='%23c9a961' opacity='0.3'/><text x='50%' y='35%' dominant-baseline='middle' text-anchor='middle' fill='%232d5445' font-family='serif' font-size='24' opacity='0.6'>Nature Cure</text></svg>",
-                badge: "Naturopathy"
-            },
-            {
-                id: 9,
-                name: "Devaaya Ayurveda & Nature Cure Centre",
-                location: "Goa",
-                state: "Goa",
-                description: "Beachfront Ayurvedic center offering personalized wellness programs combining traditional therapies with modern diagnostics.",
-                price: 28000,
-                type: "Wellness Center",
-                category: "Wellness Retreat",
-                wellness: ["Ayurveda & Spa", "Detox & Naturopathy", "Yoga & Meditation"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g9' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%23e8dcc8'/><stop offset='100%' style='stop-color:%237a9b8a'/></linearGradient></defs><rect fill='url(%23g9)' width='600' height='400'/><ellipse cx='300' cy='300' rx='200' ry='60' fill='%232d5445' opacity='0.2'/><circle cx='450' cy='120' r='70' fill='%23c9a961' opacity='0.3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%232d5445' font-family='serif' font-size='24' opacity='0.6'>Goan Paradise</text></svg>",
-                badge: "Beach"
-            },
-            {
-                id: 10,
-                name: "Wildflower Hall",
-                location: "Shimla, Himachal Pradesh",
-                state: "Himachal Pradesh",
-                description: "An Oberoi property offering mountain wellness with spa treatments, yoga, and meditation in the midst of cedar forests.",
-                price: 72000,
-                type: "Resort",
-                category: "Wellness Resort",
-                wellness: ["Yoga & Meditation", "Ayurveda & Spa"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g10' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' style='stop-color:%231a3a2e'/><stop offset='100%' style='stop-color:%238b6f47'/></linearGradient></defs><rect fill='url(%23g10)' width='600' height='400'/><polygon points='100,250 200,150 300,250' fill='%23f4f1ea' opacity='0.2'/><polygon points='300,250 400,150 500,250' fill='%23f4f1ea' opacity='0.2'/><text x='50%' y='60%' dominant-baseline='middle' text-anchor='middle' fill='%23f4f1ea' font-family='serif' font-size='24' opacity='0.6'>Mountain Majesty</text></svg>",
-                badge: "Oberoi"
-            },
-            {
-                id: 11,
-                name: "The Ayurvedic Healing Village",
-                location: "Palakkad, Kerala",
-                state: "Kerala",
-                description: "Traditional Kerala Ayurveda center offering authentic panchakarma programs and rejuvenation therapies in a village setting.",
-                price: 22000,
-                type: "Retreat",
-                category: "Wellness Retreat",
-                wellness: ["Ayurveda & Spa", "Detox & Naturopathy"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g11' x1='0%' y1='0%' x2='100%' y2='0%'><stop offset='0%' style='stop-color:%237a9b8a'/><stop offset='100%' style='stop-color:%232d5445'/></linearGradient></defs><rect fill='url(%23g11)' width='600' height='400'/><rect x='150' y='150' width='80' height='100' fill='%23f4f1ea' opacity='0.2'/><rect x='370' y='150' width='80' height='100' fill='%23f4f1ea' opacity='0.2'/><circle cx='300' cy='120' r='40' fill='%23c9a961' opacity='0.3'/><text x='50%' y='65%' dominant-baseline='middle' text-anchor='middle' fill='%23f4f1ea' font-family='serif' font-size='24' opacity='0.6'>Village Healing</text></svg>",
-                badge: "Traditional"
-            },
-            {
-                id: 12,
-                name: "Tree of Life Resort & Spa",
-                location: "Jaipur, Rajasthan",
-                state: "Rajasthan",
-                description: "Luxury desert wellness resort offering Ayurvedic treatments, yoga, and organic cuisine in a royal Rajasthani setting.",
-                price: 45000,
-                type: "Resort",
-                category: "Offbeat Stay",
-                wellness: ["Yoga & Meditation", "Ayurveda & Spa", "Detox & Naturopathy"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g12' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%238b6f47'/><stop offset='50%' style='stop-color:%23e8dcc8'/><stop offset='100%' style='stop-color:%238b6f47'/></linearGradient></defs><rect fill='url(%23g12)' width='600' height='400'/><polygon points='300,100 350,200 250,200' fill='%23c9a961' opacity='0.3'/><rect x='260' y='200' width='80' height='100' fill='%232d5445' opacity='0.2'/></svg>",
-                badge: "Heritage"
-            },
-            {
-                id: 13,
-                name: "Soukya Holistic Health Centre",
-                location: "Bangalore, Karnataka",
-                state: "Karnataka",
-                description: "Internationally renowned holistic health center combining Ayurveda, naturopathy, yoga, and homeopathy in an organic farm setting.",
-                price: 35000,
-                type: "Wellness Center",
-                category: "Wellness Retreat",
-                wellness: ["Ayurveda & Spa", "Detox & Naturopathy", "Yoga & Meditation"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><rect fill='%237a9b8a' width='600' height='400'/><circle cx='300' cy='200' r='80' fill='%23f4f1ea' opacity='0.3'/><rect x='200' y='250' width='200' height='100' fill='%232d5445' opacity='0.4'/></svg>",
-                badge: "Holistic"
-            },
-            {
-                id: 14,
-                name: "Dharana at Shillim",
-                location: "Pune, Maharashtra",
-                state: "Maharashtra",
-                description: "Award-winning wellness retreat offering personalized programs with nature trails, meditation, and sustainable luxury.",
-                price: 62000,
-                type: "Retreat",
-                category: "Wellness Resort",
-                wellness: ["Yoga & Meditation", "Ayurveda & Spa", "Detox & Naturopathy"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g14' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%231a3a2e'/><stop offset='100%' style='stop-color:%237a9b8a'/></linearGradient></defs><rect fill='url(%23g14)' width='600' height='400'/><circle cx='450' cy='150' r='60' fill='%23c9a961' opacity='0.3'/></svg>",
-                badge: "Award-Winning"
-            },
-            {
-                id: 15,
-                name: "The Serenity River Resort",
-                location: "Rishikesh, Uttarakhand",
-                state: "Uttarakhand",
-                description: "Riverside yoga retreat offering traditional Hatha and Ashtanga yoga with views of the Ganges and Himalayas.",
-                price: 28000,
-                type: "Retreat",
-                category: "Offbeat Stay",
-                wellness: ["Yoga & Meditation"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><rect fill='%23e8dcc8' width='600' height='400'/><path d='M0,300 Q150,280 300,300 T600,300 L600,400 L0,400 Z' fill='%237a9b8a' opacity='0.5'/><circle cx='150' cy='100' r='50' fill='%238b6f47' opacity='0.3'/></svg>",
-                badge: "Riverside"
-            },
-            {
-                id: 16,
-                name: "Carnoustie Ayurveda & Wellness Resort",
-                location: "Mararikulam, Kerala",
-                state: "Kerala",
-                description: "Beachfront Ayurvedic resort with traditional Kerala treatments, yoga, and meditation overlooking the Arabian Sea.",
-                price: 38000,
-                type: "Resort",
-                category: "Wellness Resort",
-                wellness: ["Ayurveda & Spa", "Yoga & Meditation"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g16' x1='0%' y1='100%' x2='0%' y2='0%'><stop offset='0%' style='stop-color:%237a9b8a'/><stop offset='100%' style='stop-color:%23e8dcc8'/></linearGradient></defs><rect fill='url(%23g16)' width='600' height='400'/><ellipse cx='300' cy='350' rx='200' ry='50' fill='%232d5445' opacity='0.3'/></svg>",
-                badge: "Beachfront"
-            },
-            {
-                id: 17,
-                name: "Fazlani Nature's Nest",
-                location: "Lonavala, Maharashtra",
-                state: "Maharashtra",
-                description: "Nature wellness retreat offering detox programs, naturopathy, and yoga in the serene Sahyadri mountains.",
-                price: 32000,
-                type: "Retreat",
-                category: "Wellness Retreat",
-                wellness: ["Detox & Naturopathy", "Yoga & Meditation"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><rect fill='%238b6f47' width='600' height='400'/><path d='M0,250 L150,200 L300,230 L450,190 L600,220 L600,400 L0,400 Z' fill='%231a3a2e' opacity='0.6'/><circle cx='500' cy='100' r='40' fill='%23f4f1ea' opacity='0.4'/></svg>",
-                badge: "Mountain"
-            },
-            {
-                id: 18,
-                name: "Purple Valley Yoga Retreat",
-                location: "Goa",
-                state: "Goa",
-                description: "Dedicated Ashtanga yoga retreat center offering intensive yoga programs with international teachers in a peaceful Goan setting.",
-                price: 48000,
-                type: "Retreat",
-                category: "Offbeat Stay",
-                wellness: ["Yoga & Meditation"],
-                image: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 400'><defs><linearGradient id='g18' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' style='stop-color:%23e8dcc8'/><stop offset='100%' style='stop-color:%237a9b8a'/></linearGradient></defs><rect fill='url(%23g18)' width='600' height='400'/><rect x='150' y='150' width='300' height='180' fill='%232d5445' opacity='0.3'/></svg>",
-                badge: "Ashtanga"
-            }
-        ];
-
-        let currentListings = [...listings];
+	let listings = [];
+	let currentListings = [];       
         let currentSort = 'featured';
         let currentCategory = 'all';
 
         // Initialize
-        function init() {
-            renderListings(currentListings);
-            updateExperienceCounts();
-            updateListingsCount();
-        }
+        async function init() {
+    try {
+        const response = await fetch('/listings.json');
+        listings = await response.json();
+        currentListings = [...listings];
+        renderListings(currentListings);
+        updateExperienceCounts();
+        updateListingsCount();
+    } catch (e) {
+        console.error('Failed to load listings:', e);
+        document.getElementById('listings-container').innerHTML = 
+            '<p style="text-align:center;color:#7a9b8a;padding:2rem;">Unable to load listings. Please refresh.</p>';
+    }
+}
 
         // Update experience counts
         function updateExperienceCounts() {
@@ -4002,8 +3780,8 @@ function changeCurrency() {
         // Render Listings
 	function renderListings(data) {
             const container = document.getElementById('listings-container');
-            const wishlist = JSON.parse(localStorage.getItem('wellnessWishlist') || '[]');
-            
+const wishlist = JSON.parse(localStorage.getItem('wellnessWishlist') || '[]');
+const fallbackImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%231a3a2e'/%3E%3Cstop offset='50%25' style='stop-color:%232d5445'/%3E%3Cstop offset='100%25' style='stop-color:%237a9b8a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23bg)' width='800' height='600'/%3E%3Ccircle cx='400' cy='280' r='120' fill='%23c9a961' opacity='0.12'/%3E%3Ccircle cx='150' cy='450' r='90' fill='%237a9b8a' opacity='0.15'/%3E%3Ccircle cx='680' cy='150' r='70' fill='%238b6f47' opacity='0.15'/%3E%3C/svg%3E";
             container.innerHTML = data.map(listing => {
                 const isFavorite = wishlist.includes(listing.id);
                 // Truncate description to one line (about 80 characters)
@@ -4013,7 +3791,7 @@ function changeCurrency() {
                 
                 return `
                 <div class="listing-card" onclick="openDetailModal(${listing.id})">
-                    <div class="listing-image" style="background-image: url('${listing.image}')">
+                    <div class="listing-image" style="background-image: url('${listing.image || fallbackImage}')">
                         <div class="listing-badge">${listing.badge}</div>
                         <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite(${listing.id}, event)">
                             ${isFavorite ? '♥' : '♡'}
