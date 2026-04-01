@@ -214,7 +214,7 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(26, 58, 46, 0.4), rgba(45, 84, 69, 0.6)), 
+            background: linear-gradient(160deg, #1a3a2e 0%, #2d5445 45%, #1a3a2e 100%); 
                         url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23e8dcc8;stop-opacity:1"/><stop offset="100%" style="stop-color:%23f4f1ea;stop-opacity:1"/></linearGradient><radialGradient id="sun" cx="50%" cy="50%"><stop offset="0%" style="stop-color:%23c9a961;stop-opacity:0.8"/><stop offset="100%" style="stop-color:%23c9a961;stop-opacity:0"/></radialGradient></defs><rect fill="url(%23sky)" width="1600" height="900"/><ellipse cx="1200" cy="200" rx="120" ry="120" fill="url(%23sun)"/><path d="M0,600 Q200,550 400,600 T800,600 T1200,600 T1600,600" fill="%232d5445" opacity="0.7"/><path d="M0,650 Q250,600 500,650 T1000,650 T1600,650" fill="%231a3a2e" opacity="0.5"/><path d="M0,700 Q300,670 600,700 T1200,700 T1600,700" fill="%231a3a2e" opacity="0.8"/><ellipse cx="400" cy="400" rx="60" ry="80" fill="%237a9b8a" opacity="0.3"/><ellipse cx="1100" cy="450" rx="50" ry="70" fill="%237a9b8a" opacity="0.3"/><circle cx="800" cy="500" r="40" fill="%238b6f47" opacity="0.2"/><path d="M300,750 Q320,730 340,750" stroke="%237a9b8a" stroke-width="2" fill="none" opacity="0.5"/><path d="M1200,770 Q1220,750 1240,770" stroke="%237a9b8a" stroke-width="2" fill="none" opacity="0.5"/></svg>');
             background-size: cover;
             background-position: center;
@@ -259,7 +259,7 @@
 
 .cycling-word {
             display: inline-block;
-            color: #c4a57b;
+            color: #e8d5b8;
             font-style: italic;
             min-width: 160px;
             transition: opacity 0.6s ease, transform 0.6s ease;
@@ -2607,7 +2607,13 @@
     </header>
 
     <section class="hero">
-        <div class="hero-content">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="1240" cy="160" rx="360" ry="120" fill="#c9a961" opacity="0.08"/>
+        <ellipse cx="300" cy="720" rx="240" ry="80" fill="#7a9b8a" opacity="0.12"/>
+        <path d="M0,640 Q400,580 800,620 T1600,590 L1600,900 L0,900Z" fill="#0d2218" opacity="0.5"/>
+        <path d="M0,700 Q500,650 1000,680 T1600,660 L1600,900 L0,900Z" fill="#0d2218" opacity="0.7"/>
+    </svg>
+    <div class="hero-content">
             <h1>
      Your Journey to<br>
     <span class="cycling-word" id="cycling-word">Wellness</span><br>
@@ -2622,30 +2628,123 @@
         <div class="experiences-container">
             <h2>Explore by Wellness Experience</h2>
             <p class="experiences-subtitle">Choose your path to holistic wellbeing</p>
-            
             <div class="experiences-grid">
-                <div class="experience-card" onclick="filterByExperience('Yoga & Meditation')">
-                    <div class="experience-icon">🧘</div>
-                    <h3>Yoga & Meditation</h3>
-                    <p>Find inner peace through ancient practices of mindfulness, breath work, and asanas</p>
-                    <div class="experience-count" id="count-yoga">12 Experiences</div>
-                </div>
-
-                <div class="experience-card" onclick="filterByExperience('Ayurveda & Spa')">
-                    <div class="experience-icon">🌿</div>
-                    <h3>Ayurveda & Spa</h3>
-                    <p>Restore balance with traditional healing therapies and rejuvenating treatments</p>
-                    <div class="experience-count" id="count-ayurveda">11 Experiences</div>
-                </div>
-
-                <div class="experience-card" onclick="filterByExperience('Detox & Naturopathy')">
-                    <div class="experience-icon">🍃</div>
-                    <h3>Detox & Naturopathy</h3>
-                    <p>Cleanse and revitalize through natural healing and holistic wellness programs</p>
-                    <div class="experience-count" id="count-detox">8 Experiences</div>
-                </div>
-            </div>
-        </div>
+    <div class="experience-card" onclick="filterByExperience('Yoga')">
+        <div class="experience-icon">🧘</div>
+        <h3>Yoga</h3>
+        <p>Connect mind and body through ancient postures, breathwork, and yogic philosophy</p>
+        <div class="experience-count" id="count-yoga">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Ayurveda')">
+        <div class="experience-icon">🌿</div>
+        <h3>Ayurveda</h3>
+        <p>Restore balance with India's ancient system of natural healing and herbal therapies</p>
+        <div class="experience-count" id="count-ayurveda">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Meditation & Mindfulness')">
+        <div class="experience-icon">🕯️</div>
+        <h3>Meditation & Mindfulness</h3>
+        <p>Cultivate inner stillness and presence through guided meditation practices</p>
+        <div class="experience-count" id="count-meditation">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Nature & Forest Therapy')">
+        <div class="experience-icon">🌲</div>
+        <h3>Nature & Forest Therapy</h3>
+        <p>Heal through immersive time in nature, forest bathing, and outdoor wellness</p>
+        <div class="experience-count" id="count-nature">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Spa & Massage Therapy')">
+        <div class="experience-icon">💆</div>
+        <h3>Spa & Massage Therapy</h3>
+        <p>Rejuvenate body and mind with therapeutic massages and restorative spa rituals</p>
+        <div class="experience-count" id="count-spa">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Panchakarma / Detoxification')">
+        <div class="experience-icon">🍃</div>
+        <h3>Panchakarma / Detoxification</h3>
+        <p>Deep cleansing of body and mind through classical Ayurvedic detox therapies</p>
+        <div class="experience-count" id="count-panchakarma">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Rejuvenation & Anti-Ageing')">
+        <div class="experience-icon">✨</div>
+        <h3>Rejuvenation & Anti-Ageing</h3>
+        <p>Turn back time with holistic therapies focused on vitality and longevity</p>
+        <div class="experience-count" id="count-rejuvenation">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Disease Management')">
+        <div class="experience-icon">🩺</div>
+        <h3>Disease Management</h3>
+        <p>Targeted wellness programs to support recovery and manage chronic conditions</p>
+        <div class="experience-count" id="count-disease">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Spiritual & Energy Healing')">
+        <div class="experience-icon">🔮</div>
+        <h3>Spiritual & Energy Healing</h3>
+        <p>Explore chakra balancing, pranic healing, and energy-based transformative practices</p>
+        <div class="experience-count" id="count-spiritual">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Naturopathy')">
+        <div class="experience-icon">🌱</div>
+        <h3>Naturopathy</h3>
+        <p>Natural healing through diet, hydrotherapy, and drug-free therapeutic approaches</p>
+        <div class="experience-count" id="count-naturopathy">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Stress Management & Mental Wellness')">
+        <div class="experience-icon">🧠</div>
+        <h3>Stress Management & Mental Wellness</h3>
+        <p>Evidence-based programs to manage stress, anxiety, and restore emotional balance</p>
+        <div class="experience-count" id="count-stress">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Weight Management')">
+        <div class="experience-icon">⚖️</div>
+        <h3>Weight Management</h3>
+        <p>Sustainable weight wellness through nutrition, movement, and lifestyle changes</p>
+        <div class="experience-count" id="count-weight">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Pain & Orthopaedic Care')">
+        <div class="experience-icon">🦴</div>
+        <h3>Pain & Orthopaedic Care</h3>
+        <p>Specialised programs for pain relief, joint health, and musculoskeletal recovery</p>
+        <div class="experience-count" id="count-pain">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Sowa Rigpa / Tibetan Healing')">
+        <div class="experience-icon">🏔️</div>
+        <h3>Sowa Rigpa / Tibetan Healing</h3>
+        <p>Ancient Himalayan medicine using herbs, diet, and spiritual healing traditions</p>
+        <div class="experience-count" id="count-sowa">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Skin & Beauty Care')">
+        <div class="experience-icon">🌸</div>
+        <h3>Skin & Beauty Care</h3>
+        <p>Natural beauty therapies and skin wellness rituals using traditional ingredients</p>
+        <div class="experience-count" id="count-skin">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Fitness & Movement')">
+        <div class="experience-icon">🏃</div>
+        <h3>Fitness & Movement</h3>
+        <p>Structured fitness programs combining movement, strength, and active wellness</p>
+        <div class="experience-count" id="count-fitness">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Women\'s Wellness')">
+        <div class="experience-icon">🌺</div>
+        <h3>Women's Wellness</h3>
+        <p>Holistic programs designed around women's health, hormones, and wellbeing</p>
+        <div class="experience-count" id="count-womens">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Sleep Therapy')">
+        <div class="experience-icon">🌙</div>
+        <h3>Sleep Therapy</h3>
+        <p>Restore healthy sleep patterns through relaxation, therapy, and sleep hygiene</p>
+        <div class="experience-count" id="count-sleep">Loading...</div>
+    </div>
+    <div class="experience-card" onclick="filterByExperience('Nutrition & Diet Therapy')">
+        <div class="experience-icon">🥗</div>
+        <h3>Nutrition & Diet Therapy</h3>
+        <p>Personalised dietary guidance and therapeutic nutrition for lasting health</p>
+        <div class="experience-count" id="count-nutrition">Loading...</div>
+    </div>
+</div>
+                    </div>
     </section>
 
     <!-- Browse by Retreat Type -->
@@ -2834,7 +2933,7 @@
 
 <!-- Treatments Filter -->
                 <div class="filter-section">
-                    <h4>Treatments & Programs</h4>
+                    <h4>What are you looking for?</h4>
                     <div class="filter-checkboxes">
                         <label class="filter-checkbox">
                             <input type="checkbox" class="wellness-filter" value="Yoga" onchange="applyFilters()">
@@ -3170,7 +3269,7 @@
                 <p class="auth-subtitle">Login to save your favorite retreats</p>
                 
                 <!-- Social Login Buttons -->
-                <div class="social-login-buttons">
+                <!--<div class="social-login-buttons">
                     <button type="button" class="social-btn google-btn" onclick="alert('Google login coming soon!')">
                         <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
                         Continue with Google
@@ -3183,7 +3282,7 @@
 
                 <div class="auth-divider">
                     <span>or continue with email</span>
-                </div>
+                </div>-->
 
                 <form onsubmit="handleLogin(event)">
 
@@ -3214,7 +3313,7 @@
                 <p class="auth-subtitle">Join to build your wellness wishlist</p>
                 
                 <!-- Social Signup Buttons -->
-                <div class="social-login-buttons">
+                <!--<div class="social-login-buttons">
                     <button type="button" class="social-btn google-btn" onclick="alert('Google signup coming soon!')">
                         <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
                         Sign up with Google
@@ -3227,7 +3326,7 @@
 
                 <div class="auth-divider">
                     <span>or sign up with email</span>
-                </div>
+                </div>-->
 
                 <form onsubmit="handleSignup(event)">
 
@@ -3831,14 +3930,34 @@ function changeCurrency() {
 
         // Update experience counts
         function updateExperienceCounts() {
-            const yogaCount = listings.filter(l => l.wellness.includes('Yoga & Meditation')).length;
-            const ayurvedaCount = listings.filter(l => l.wellness.includes('Ayurveda & Spa')).length;
-            const detoxCount = listings.filter(l => l.wellness.includes('Detox & Naturopathy')).length;
+    const termMap = [
+        { term: 'Yoga',                              id: 'count-yoga' },
+        { term: 'Ayurveda',                          id: 'count-ayurveda' },
+        { term: 'Meditation & Mindfulness',          id: 'count-meditation' },
+        { term: 'Nature & Forest Therapy',           id: 'count-nature' },
+        { term: 'Spa & Massage Therapy',             id: 'count-spa' },
+        { term: 'Panchakarma / Detoxification',      id: 'count-panchakarma' },
+        { term: 'Rejuvenation & Anti-Ageing',        id: 'count-rejuvenation' },
+        { term: 'Disease Management',                id: 'count-disease' },
+        { term: 'Spiritual & Energy Healing',        id: 'count-spiritual' },
+        { term: 'Naturopathy',                       id: 'count-naturopathy' },
+        { term: 'Stress Management & Mental Wellness', id: 'count-stress' },
+        { term: 'Weight Management',                 id: 'count-weight' },
+        { term: 'Pain & Orthopaedic Care',           id: 'count-pain' },
+        { term: 'Sowa Rigpa / Tibetan Healing',      id: 'count-sowa' },
+        { term: 'Skin & Beauty Care',                id: 'count-skin' },
+        { term: 'Fitness & Movement',                id: 'count-fitness' },
+        { term: "Women's Wellness",                  id: 'count-womens' },
+        { term: 'Sleep Therapy',                     id: 'count-sleep' },
+        { term: 'Nutrition & Diet Therapy',          id: 'count-nutrition' },
+    ];
 
-            document.getElementById('count-yoga').textContent = `${yogaCount} Experience${yogaCount !== 1 ? 's' : ''}`;
-            document.getElementById('count-ayurveda').textContent = `${ayurvedaCount} Experience${ayurvedaCount !== 1 ? 's' : ''}`;
-            document.getElementById('count-detox').textContent = `${detoxCount} Experience${detoxCount !== 1 ? 's' : ''}`;
-        }
+    termMap.forEach(({ term, id }) => {
+        const count = listings.filter(l => l.treatments && l.treatments.includes(term)).length;
+        const el = document.getElementById(id);
+        if (el) el.textContent = `${count} Experience${count !== 1 ? 's' : ''}`;
+    });
+}
 
         // Update listings count
         function updateListingsCount() {
@@ -4365,25 +4484,27 @@ Remember: You're here to guide their wellness journey with genuine care and expe
             document.getElementById('current-step').textContent = currentQuizStep;
         }
 
-        function showQuizResults() {
-            // Hide questions and nav
-            document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
-            document.getElementById('quiz-nav').style.display = 'none';
-            
-            // Generate recommendations based on answers
-            const recommendations = generateRecommendations();
-            
-            // Display results
-            const resultsList = document.getElementById('results-list');
-            resultsList.innerHTML = recommendations.map(rec => `
-                <div class="quiz-result-item">
-                    <h4>${rec.title}</h4>
-                    <p>${rec.description}</p>
-                </div>
-            `).join('');
-            
-            document.getElementById('quiz-results').classList.add('active');
-        }
+	function showQuizResults() {
+    document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+    document.getElementById('quiz-nav').style.display = 'none';
+
+    const matched = getQuizFilteredListings();
+    const resultsList = document.getElementById('results-list');
+
+    if (matched.length === 0) {
+        resultsList.innerHTML = `<div class="quiz-result-item"><h4>No exact matches</h4><p>Try broadening your preferences — we'll show you our closest picks.</p></div>`;
+    } else {
+        resultsList.innerHTML = `
+            <div class="quiz-result-item" style="border-left-color: var(--sage);">
+                <h4>We found ${matched.length} retreat${matched.length !== 1 ? 's' : ''} matching your preferences</h4>
+                <p>${matched.slice(0, 3).map(l => l.name).join(', ')}${matched.length > 3 ? ` and ${matched.length - 3} more...` : '.'}</p>
+            </div>
+        `;
+    }
+
+    document.getElementById('quiz-results').classList.add('active');
+}        
+
 
         function generateRecommendations() {
             const recommendations = [];
