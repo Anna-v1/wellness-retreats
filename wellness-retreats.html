@@ -2832,6 +2832,89 @@
                     </div>
                 </div>
 
+<!-- Treatments Filter -->
+                <div class="filter-section">
+                    <h4>Treatments & Programs</h4>
+                    <div class="filter-checkboxes">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Yoga" onchange="applyFilters()">
+                            <span>Yoga</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Ayurveda" onchange="applyFilters()">
+                            <span>Ayurveda</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Meditation & Mindfulness" onchange="applyFilters()">
+                            <span>Meditation & Mindfulness</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Nature & Forest Therapy" onchange="applyFilters()">
+                            <span>Nature & Forest Therapy</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Spa & Massage Therapy" onchange="applyFilters()">
+                            <span>Spa & Massage Therapy</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Panchakarma / Detoxification" onchange="applyFilters()">
+                            <span>Panchakarma / Detoxification</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Rejuvenation & Anti-Ageing" onchange="applyFilters()">
+                            <span>Rejuvenation & Anti-Ageing</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Disease Management" onchange="applyFilters()">
+                            <span>Disease Management</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Spiritual & Energy Healing" onchange="applyFilters()">
+                            <span>Spiritual & Energy Healing</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Naturopathy" onchange="applyFilters()">
+                            <span>Naturopathy</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Stress Management & Mental Wellness" onchange="applyFilters()">
+                            <span>Stress Management & Mental Wellness</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Weight Management" onchange="applyFilters()">
+                            <span>Weight Management</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Pain & Orthopaedic Care" onchange="applyFilters()">
+                            <span>Pain & Orthopaedic Care</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Sowa Rigpa / Tibetan Healing" onchange="applyFilters()">
+                            <span>Sowa Rigpa / Tibetan Healing</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Skin & Beauty Care" onchange="applyFilters()">
+                            <span>Skin & Beauty Care</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Fitness & Movement" onchange="applyFilters()">
+                            <span>Fitness & Movement</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Women's Wellness" onchange="applyFilters()">
+                            <span>Women's Wellness</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Sleep Therapy" onchange="applyFilters()">
+                            <span>Sleep Therapy</span>
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" class="wellness-filter" value="Nutrition & Diet Therapy" onchange="applyFilters()">
+                            <span>Nutrition & Diet Therapy</span>
+                        </label>
+                    </div>
+                </div>
+
 
                 <!-- Property Type Filter - Multi-select Checkboxes -->
                 <div class="filter-section">
@@ -3845,6 +3928,7 @@ const fallbackImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
             
             // Get selected property types (multi-select checkboxes)
             const selectedTypes = Array.from(document.querySelectorAll('.type-filter:checked')).map(cb => cb.value);
+            const selectedTreatments = Array.from(document.querySelectorAll('.wellness-filter:checked')).map(cb => cb.value);
 
             currentListings = listings.filter(listing => {
                 // Category filter (from tabs)
@@ -3861,6 +3945,13 @@ const fallbackImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
                 if (selectedTypes.length > 0 && !selectedTypes.includes(listing.type)) {
                     return false;
                 }
+
+		// Treatments filter - listing must have ALL selected treatments
+                if (selectedTreatments.length > 0) {
+                    const hasAll = selectedTreatments.every(t => listing.treatments && listing.treatments.includes(t));
+                    if (!hasAll) return false;
+                }
+		
                 
                 // Price filter - range (listing price must be within min and max)
                 if (listing.price < minPrice || listing.price > maxPrice) {
