@@ -4396,9 +4396,9 @@ Remember: You're here to guide their wellness journey with genuine care and expe
         let currentQuizStep = 1;
 
         function showInspireMe() {
-            document.getElementById('inspire-me-modal').classList.add('active');
-            restartQuiz();
-        }
+    restartQuiz();
+    document.getElementById('inspire-me-modal').classList.add('active');
+}
 
         function closeInspireMe() {
             document.getElementById('inspire-me-modal').classList.remove('active');
@@ -4578,59 +4578,130 @@ Remember: You're here to guide their wellness journey with genuine care and expe
             document.getElementById('experiences').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        function applyQuizFilters() {
-            // Clear existing filters
-            clearFilters();
-            
-            // Apply budget filter based on q5
-            const budgetMap = {
-                'budget': '10000-25000',
-                'moderate': '25000-50000',
-                'premium': '50000-75000',
-                'luxury': '75000+'
-            };
-            
-            if (quizAnswers.q5) {
-                document.getElementById('price-filter').value = budgetMap[quizAnswers.q5] || '';
-            }
-            
-            // Check relevant wellness filters based on q3
-            if (quizAnswers.q3 === 'ayurveda') {
-                const ayurvedaCheckbox = Array.from(document.querySelectorAll('.wellness-filter'))
-                    .find(cb => cb.value === 'Ayurveda & Spa');
-                if (ayurvedaCheckbox) ayurvedaCheckbox.checked = true;
-            } else if (quizAnswers.q3 === 'yoga-meditation') {
-                const yogaCheckbox = Array.from(document.querySelectorAll('.wellness-filter'))
-                    .find(cb => cb.value === 'Yoga & Meditation');
-                if (yogaCheckbox) yogaCheckbox.checked = true;
-            } else if (quizAnswers.q3 === 'detox') {
-                const detoxCheckbox = Array.from(document.querySelectorAll('.wellness-filter'))
-                    .find(cb => cb.value === 'Detox & Naturopathy');
-                if (detoxCheckbox) detoxCheckbox.checked = true;
-            }
-            
-            applyFilters();
-        }
+	function getQuizFilteredListings() {
+    // Budget ranges from q5
+    const budgetRanges = {
+        'budget':   { min: 0,     max: 25000 },
+        'moderate': { min: 25000, max: 50000 },
+        'premium':  { min: 50000, max: 75000 },
+        'luxury':   { min: 75000, max: 999999 }
+    };
+
+    // Treatment terms from q3
+    const treatmentMap = {
+        'ayurveda':       'Ayurveda',
+        'yoga-meditation': 'Yoga',
+        'detox':          'Panchakarma / Detoxification',
+        'holistic':       'Meditation & Mindfulness'
+    };
+
+    // Region keywords from q2
+    const regionMap = {
+        'mountains': ['Uttarakhand', 'Himachal Pradesh', 'Sikkim', 'Ladakh'],
+        'beach':     ['Kerala', 'Goa', 'Tamil Nadu', 'Andhra Pradesh'],
+        'forest':    ['Karnataka', 'Maharashtra', 'Madhya Pradesh', 'Assam'],
+        'heritage':  ['Rajasthan', 'Gujarat', 'Uttar Pradesh']
+    };
+
+    const budget = budgetRanges[quizAnswers.q5] || { min: 0, max: 999999 };
+    const treatmentTerm = treatmentMap[quizAnswers.q3] || null;
+    const regionStates = regionMap[quizAnswers.q2] || null;
+
+    return listings.filter(l => {
+        if (l.price < budget.min || l.price > budget.max) return false;
+        if (treatmentTerm && !(l.treatments && l.treatments.includes(treatmentTerm))) return false;
+        if (regionStates && !regionStates.includes(l.state)) return false;
+        return true;
+    });
+}
+
+function applyQuizFilters() {
+    clearAllFilters();
+
+    // Set price slider to match budget answer
+    const budgetRanges = {
+        'budget':   { min: 0,     max: 25000 },
+        'moderate': { min: 25000, max: 50000 },
+        'premium':  { min: 50000, max: 75000 },
+        'luxury':   { min: 75000, max: 100000 }
+    };
+    const budget = budgetRanges[quizAnswers.q5];
+    if (budget) {
+        const minSlider = document.getElementById('price-min');
+        const maxSlider = document.getElementById('price-max');
+        const minInput = document.getElementById('price-min-input');
+        const maxInput = document.getElementById('price-max-input');
+        if (minSlider) minSlider.value = budget.min;
+        if (maxSlider) maxSlider.value = budget.max;
+        if (minInput) minInput.value = budget.min;
+        if (maxInput) maxInput.value = budget.max;
+        updateDualSlider();
+    }
+
+    // Check the matching treatment filter
+    const treatmentMap = {
+        'ayurveda':        'Ayurveda',
+        'yoga-meditation': 'Yoga',
+        'detox':           'Panchakarma / Detoxification',
+        'holistic':        'Meditation & Mindfulness'
+    };
+    const term = treatmentMap[quizAnswers.q3];
+    if (term) {
+        const cb = Array.from(document.querySelectorAll('.wellness-filter'))
+            .find(c => c.value === term);
+        if (cb) cb.checked = true;
+    }
+
+    // Check matching location filters
+    const regionMap = {
+        'mountains': ['Uttarakhand', 'Himachal Pradesh'],
+        'beach':     ['Kerala', 'Goa'],
+        'forest':    ['Karnataka', 'Maharashtra'],
+        'heritage':  ['Rajasthan', 'Gujarat']
+    };
+    const states = regionMap[quizAnswers.q2] || [];
+    states.forEach(state => {
+        const cb = Array.from(document.querySelectorAll('.location-filter'))
+            .find(c => c.value === state);
+        if (cb) cb.checked = true;
+    });
+
+    applyFilters();
+}
+
+        
+
 
         function restartQuiz() {
-            quizAnswers = {};
-            currentQuizStep = 1;
-            
-            // Reset UI
-            document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
-            document.querySelector('.quiz-question[data-question="1"]').classList.add('active');
-            document.getElementById('quiz-results').classList.remove('active');
-            document.getElementById('quiz-nav').style.display = 'flex';
-            document.getElementById('prev-btn').style.display = 'none';
-            document.getElementById('next-btn').style.display = 'block';
-            document.getElementById('next-btn').disabled = true;
-            
-            // Reset selections
-            document.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
-            
-            // Reset progress
-            updateProgress();
-        }
+    quizAnswers = {};
+    currentQuizStep = 1;
+
+    // Reset all questions
+    document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+    const q1 = document.querySelector('.quiz-question[data-question="1"]');
+    if (q1) q1.classList.add('active');
+
+    // Reset results
+    const results = document.getElementById('quiz-results');
+    if (results) results.classList.remove('active');
+
+    // Reset nav
+    const quizNav = document.getElementById('quiz-nav');
+    if (quizNav) quizNav.style.display = 'flex';
+    const prevBtn = document.getElementById('prev-btn');
+    if (prevBtn) prevBtn.style.display = 'none';
+    const nextBtn = document.getElementById('next-btn');
+    if (nextBtn) { nextBtn.style.display = 'block'; nextBtn.disabled = true; }
+
+    // Reset selections
+    document.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+
+    // Reset progress bar and counter explicitly
+    const fill = document.getElementById('progress-fill');
+    if (fill) fill.style.width = '20%';
+    const step = document.getElementById('current-step');
+    if (step) step.textContent = '1';
+}
 // ========== AUTH SYSTEM ==========
         function openAuthModal() {
             document.getElementById('auth-modal').classList.add('active');
