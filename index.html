@@ -816,6 +816,32 @@
             message:        message        || 'None'
         };
 
+	// Send lead to Google Sheet
+const scriptURL = "https://script.google.com/macros/s/AKfycbwHXn6wKXuZu1fpmKHtIqNFXNn8owOeJJ4NmAGaBFslcsbsAAKnVtBjwtExOXFV_UCc/exec";
+
+const today = new Date();
+const queryDate = today.toLocaleDateString("en-GB");
+
+const leadData = {
+  queryDate:      queryDate,
+  source:         "Website",
+  travelDate:     document.getElementById("travel-dates").value || "",
+  clientName:     document.getElementById("name").value || "",
+  email:          document.getElementById("email").value || "",
+  phoneNumber:    document.getElementById("phone").value || "",
+  noOfTravellers: document.getElementById("guests").value || "",
+  destination:    document.getElementById("destination").value || "",
+  retreatType:    document.getElementById("retreat-type").value || "",
+  notes:          document.getElementById("message").value || ""
+};
+
+fetch(scriptURL, {
+  method: "POST",
+  body: JSON.stringify(leadData)
+}).catch(err => console.error("Sheet sync failed:", err));
+
+
+
         // ── 1. Email via EmailJS (silent background send) ──
         // EmailJS sends directly to wellnessretreats.in@gmail.com with no user action.
         // ⚠️  ONE-TIME SETUP (5 mins) — do this once then it works forever:
