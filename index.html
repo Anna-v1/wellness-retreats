@@ -881,6 +881,27 @@ fetch(scriptURL, {
             window.location.href = `mailto:wellnessretreats.in@gmail.com?subject=${subj}&body=${body}`;
         }
 
+	// ── 3. Google Sheet sync ──
+        const SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwHXn6wKXuZu1fpmKHtIqNFXNn8owOeJJ4NmAGaBFslcsbsAAKnVtBjwtExOXFV_UCc/exec";
+        const today = new Date();
+        const queryDate = today.toLocaleDateString("en-GB");
+
+        fetch(SHEET_SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({
+                queryDate:      queryDate,
+                source:         "Website",
+                travelDate:     travelDates,
+                clientName:     name,
+                email:          email,
+                phoneNumber:    phone,
+                noOfTravellers: guests,
+                destination:    destination,
+                retreatType:    retreatType,
+                notes:          message
+            })
+        }).catch(err => console.error("Sheet sync failed:", err));
+
         // ── 2. WhatsApp — fires simultaneously with email ──
         const waText = encodeURIComponent(
             `🌿 *New Retreat Enquiry*\n\n` +
