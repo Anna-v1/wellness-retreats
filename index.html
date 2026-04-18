@@ -932,7 +932,15 @@ async function handleB2C(waWin){
     submitted_at:     new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
   };
 
-  /* 1. EmailJS */
+  /* 1. Fire Apps Script immediately — independent of EmailJS */
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode:   'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ sheet: 'B2C Leads', ...data })
+  }).catch(e => console.warn('Apps Script error:', e));
+
+  /* 2. EmailJS */
   await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_B2C_TEMPLATE, {
     from_name:       data.full_name,
     from_email:      data.email,
@@ -947,22 +955,18 @@ async function handleB2C(waWin){
     submitted_at:    data.submitted_at
   });
 
-  /* 2. Google Apps Script — text/plain avoids CORS preflight */
-  fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    mode:   'no-cors',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify({ sheet: 'B2C Leads', ...data })
-  }).catch(e => console.warn('Apps Script error:', e));
-
   /* 3. WhatsApp — window already opened, now set URL */
   if (waWin && waChecked) {
     const waText = encodeURIComponent(
-      `Hi ${data.full_name}! 🙏 Thank you for reaching out to Wellness Retreats.\n\n` +
-      `We've received your enquiry for a wellness experience in ${data.destination || 'India'} ` +
-      `for ${data.guests} around ${data.travel_dates}.\n\n` +
-      `Our curator will personally reach out within 24 hours with curated recommendations.\n\n` +
-      `— Team Wellness Retreats`
+      `Hi! I'm looking for a wellness experience and found Wellness Retreats. 🙏\n\n` +
+      `Here's what I have in mind:\n\n` +
+      `Type: ${data.experience_type}\n` +
+      `Destination: ${data.destination}\n` +
+      `Guests: ${data.guests}\n` +
+      `Dates: ${data.travel_dates}\n` +
+      `Budget: ${data.budget}\n\n` +
+      `I've just filled in the enquiry form. Looking forward to hearing from you!\n\n` +
+      `— ${data.full_name}, ${data.phone}`
     );
     waWin.location.href = `https://wa.me/${WA_NUMBER}?text=${waText}`;
   } else if (waWin) {
@@ -995,7 +999,15 @@ async function handleB2B(waWin){
     submitted_at:     new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
   };
 
-  /* 1. EmailJS */
+  /* 1. Fire Apps Script immediately — independent of EmailJS */
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode:   'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ sheet: 'B2B Leads', ...data })
+  }).catch(e => console.warn('Apps Script error:', e));
+
+  /* 2. EmailJS */
   await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_B2B_TEMPLATE, {
     space_name:      data.space_name,
     space_type:      data.space_type,
@@ -1017,14 +1029,6 @@ async function handleB2B(waWin){
     contact_phone:   data.contact_phone,
     submitted_at:    data.submitted_at
   });
-
-  /* 2. Google Apps Script */
-  fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    mode:   'no-cors',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify({ sheet: 'B2B Leads', ...data })
-  }).catch(e => console.warn('Apps Script error:', e));
 
   /* 3. WhatsApp — team notification */
   if (waWin) {
