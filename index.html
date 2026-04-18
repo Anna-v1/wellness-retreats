@@ -839,22 +839,16 @@ function switchMode(mode){
   document.getElementById('form-b2b').style.display = mode==='b2b' ? 'block' : 'none';
 }
 
-/* ── Submit to Google Sheet via hidden form (bypasses CORS) ── */
+/* ── Submit to Google Sheet via GET + URL params (most reliable for Apps Script) ── */
 function submitToSheet(data){
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = APPS_SCRIPT_URL;
-  form.target = 'wr-sink';
+  const params = new URLSearchParams();
   Object.entries(data).forEach(([key, val]) => {
-    const inp = document.createElement('input');
-    inp.type  = 'hidden';
-    inp.name  = key;
-    inp.value = val != null ? String(val) : '';
-    form.appendChild(inp);
+    params.append(key, val != null ? String(val) : '');
   });
-  document.body.appendChild(form);
-  form.submit();
-  document.body.removeChild(form);
+  fetch(APPS_SCRIPT_URL + '?' + params.toString(), {
+    method: 'GET',
+    mode:   'no-cors'
+  }).catch(e => console.warn('Sheet error:', e));
 }
 
 /* ════════════════════════════════════════
