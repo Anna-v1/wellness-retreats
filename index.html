@@ -845,7 +845,7 @@ const EMAILJS_SERVICE_ID  = 'service_9ttmf7b';
 const EMAILJS_B2C_TEMPLATE = 'template_nqaz8rd';
 const EMAILJS_B2B_TEMPLATE = 'template_yje0b9e';
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyUmmCiNXy99w7yPJXgr5RnXhH32yb6mr-YUhwbUYqlpj5R8g_8cLT4KJQS_p-AShQ0/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwxddXTvRWgMKARUYEEZljPm5ivkiiZV3ec80tM6i16X8lizGdPgFeT7Be2AVL6NFs7/exec';
 const WA_NUMBER = '918976400188';
 
 /* ── Collect selected tags ── */
@@ -1029,13 +1029,13 @@ async function handleB2B(waWin){
   /* 3. WhatsApp — team notification */
   if (waWin) {
     const waText = encodeURIComponent(
-      `New listing application received! 🌿\n\n` +
-      `Space: ${data.space_name} (${data.space_type})\n` +
+      `Hi! I'd love to be featured on Wellness Retreats. 🙏\n\n` +
+      `Here's a quick summary of my space:\n\n` +
+      `Name: ${data.space_name} (${data.space_type})\n` +
       `Location: ${data.state}\n` +
-      `Instagram: @${data.instagram}\n` +
-      `Contact: ${data.contact_name} — ${data.contact_phone}\n` +
-      `Email: ${data.contact_email}\n\n` +
-      `Submitted: ${data.submitted_at}`
+      `Instagram: @${data.instagram}\n\n` +
+      `I've just filled in the listing form. Looking forward to hearing from you!\n\n` +
+      `— ${data.contact_name}, ${data.contact_phone}`
     );
     waWin.location.href = `https://wa.me/${WA_NUMBER}?text=${waText}`;
   }
