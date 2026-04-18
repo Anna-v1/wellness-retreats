@@ -845,7 +845,7 @@ const EMAILJS_SERVICE_ID  = 'service_9ttmf7b';
 const EMAILJS_B2C_TEMPLATE = 'template_nqaz8rd';
 const EMAILJS_B2B_TEMPLATE = 'template_yje0b9e';
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznK9r00Pe2ankfX1Gz8F0siVozi5PbpXZ4julCGlSut74yl3hhHsIJTiNL-50aFztZ/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyUmmCiNXy99w7yPJXgr5RnXhH32yb6mr-YUhwbUYqlpj5R8g_8cLT4KJQS_p-AShQ0/exec';
 const WA_NUMBER = '918976400188';
 
 /* ── Collect selected tags ── */
@@ -878,156 +878,167 @@ async function submitForm(mode){
     return;
   }
 
-  /* Disable button to prevent double submit */
+  /* Disable button */
   const btn = document.querySelector(`#form-${mode} .submit-btn`);
-  const btnOriginal = btn.innerHTML;
   btn.innerHTML = 'Sending…';
   btn.disabled = true;
 
+  /* ── Open WhatsApp NOW (must be synchronous, within user gesture) ── */
+  let waWin = null;
+  if (isB2c) {
+    const waChecked = document.getElementById('b2c-wa').checked;
+    if (waChecked) waWin = window.open('about:blank', '_blank');
+  } else {
+    waWin = window.open('about:blank', '_blank');
+  }
+
   try {
     if (isB2c) {
-      await handleB2C();
+      await handleB2C(waWin);
     } else {
-      await handleB2B();
+      await handleB2B(waWin);
     }
-    showSuccess(mode);
   } catch(err) {
     console.error('Submission error:', err);
-    /* Still show success to user — data may have partially saved */
-    showSuccess(mode);
   }
+
+  showSuccess(mode);
 }
 
 function showSuccess(mode){
   const content = document.getElementById(mode + '-content');
-  const success = document.getElementById(mode + '-success');
+  const success  = document.getElementById(mode + '-success');
   content.style.transition = 'opacity 0.3s';
   content.style.opacity = '0';
   setTimeout(() => { content.style.display = 'none'; success.style.display = 'block'; }, 300);
 }
 
 /* ════ B2C HANDLER ════ */
-async function handleB2C(){
+async function handleB2C(waWin){
   const waChecked = document.getElementById('b2c-wa').checked;
 
   const data = {
-    form_type:   'B2C — Find a Wellness Retreat',
-    full_name:   document.getElementById('b2c-name').value.trim(),
-    phone:       document.getElementById('b2c-phone').value.trim(),
-    email:       document.getElementById('b2c-email').value.trim(),
-    whatsapp_optin: waChecked ? 'Yes' : 'No',
-    experience_type: getSelectedTypes('b2c') || 'Not selected',
-    destination: document.getElementById('b2c-state').value,
-    guests:      document.getElementById('b2c-guests').value,
-    travel_dates:document.getElementById('b2c-dates').value.trim(),
-    budget:      document.getElementById('b2c-budget').value,
-    notes:       document.getElementById('b2c-notes').value.trim() || '—',
-    submitted_at: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+    form_type:        'B2C — Find a Wellness Retreat',
+    full_name:        document.getElementById('b2c-name').value.trim(),
+    phone:            document.getElementById('b2c-phone').value.trim(),
+    email:            document.getElementById('b2c-email').value.trim(),
+    whatsapp_optin:   waChecked ? 'Yes' : 'No',
+    experience_type:  getSelectedTypes('b2c') || 'Not selected',
+    destination:      document.getElementById('b2c-state').value,
+    guests:           document.getElementById('b2c-guests').value,
+    travel_dates:     document.getElementById('b2c-dates').value.trim(),
+    budget:           document.getElementById('b2c-budget').value,
+    notes:            document.getElementById('b2c-notes').value.trim() || '—',
+    submitted_at:     new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
   };
 
   /* 1. EmailJS */
   await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_B2C_TEMPLATE, {
-    from_name:    data.full_name,
-    from_email:   data.email,
-    phone:        data.phone,
-    whatsapp_optin: data.whatsapp_optin,
+    from_name:       data.full_name,
+    from_email:      data.email,
+    phone:           data.phone,
+    whatsapp_optin:  data.whatsapp_optin,
     experience_type: data.experience_type,
-    destination:  data.destination,
-    guests:       data.guests,
-    travel_dates: data.travel_dates,
-    budget:       data.budget,
-    notes:        data.notes,
-    submitted_at: data.submitted_at
+    destination:     data.destination,
+    guests:          data.guests,
+    travel_dates:    data.travel_dates,
+    budget:          data.budget,
+    notes:           data.notes,
+    submitted_at:    data.submitted_at
   });
 
-  /* 2. Google Apps Script */
-  await fetch(APPS_SCRIPT_URL, {
+  /* 2. Google Apps Script — text/plain avoids CORS preflight */
+  fetch(APPS_SCRIPT_URL, {
     method: 'POST',
     mode:   'no-cors',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify({ sheet: 'B2C Leads', ...data })
-  });
+  }).catch(e => console.warn('Apps Script error:', e));
 
-  /* 3. WhatsApp — only if opted in */
-  if (waChecked) {
+  /* 3. WhatsApp — window already opened, now set URL */
+  if (waWin && waChecked) {
     const waText = encodeURIComponent(
       `Hi ${data.full_name}! 🙏 Thank you for reaching out to Wellness Retreats.\n\n` +
-      `We've received your enquiry for a ${data.experience_type} in ${data.destination || 'India'} ` +
+      `We've received your enquiry for a wellness experience in ${data.destination || 'India'} ` +
       `for ${data.guests} around ${data.travel_dates}.\n\n` +
-      `Our curator will personally reach out to you within 24 hours with curated recommendations.\n\n` +
+      `Our curator will personally reach out within 24 hours with curated recommendations.\n\n` +
       `— Team Wellness Retreats`
     );
-    window.open(`https://wa.me/${WA_NUMBER}?text=${waText}`, '_blank');
+    waWin.location.href = `https://wa.me/${WA_NUMBER}?text=${waText}`;
+  } else if (waWin) {
+    waWin.close();
   }
 }
 
 /* ════ B2B HANDLER ════ */
-async function handleB2B(){
+async function handleB2B(waWin){
   const data = {
-    form_type:    'B2B — Listing Application',
-    space_name:   document.getElementById('b2b-name').value.trim(),
-    space_type:   getSelectedTypes('b2b') || 'Not selected',
-    state:        document.getElementById('b2b-state').value,
-    capacity:     document.getElementById('b2b-capacity').value || '—',
-    description:  document.getElementById('b2b-desc').value.trim() || '—',
-    offerings:    getSelectedTags() || '—',
-    offerings_other: document.getElementById('b2b-offerings-other').value.trim() || '—',
-    price_range:  document.getElementById('b2b-price').value || '—',
-    min_stay:     document.getElementById('b2b-minstay').value || '—',
-    best_season:  document.getElementById('b2b-season').value || '—',
-    certifications: document.getElementById('b2b-cert').value.trim() || '—',
-    website:      document.getElementById('b2b-website').value.trim() || '—',
-    instagram:    document.getElementById('b2b-ig').value.trim(),
-    other_social: document.getElementById('b2b-social2').value.trim() || '—',
-    contact_name: document.getElementById('b2b-contact').value.trim(),
-    role:         document.getElementById('b2b-role').value || '—',
-    contact_email:document.getElementById('b2b-email').value.trim(),
-    contact_phone:document.getElementById('b2b-phone').value.trim(),
-    submitted_at: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+    form_type:        'B2B — Listing Application',
+    space_name:       document.getElementById('b2b-name').value.trim(),
+    space_type:       getSelectedTypes('b2b') || 'Not selected',
+    state:            document.getElementById('b2b-state').value,
+    capacity:         document.getElementById('b2b-capacity').value || '—',
+    description:      document.getElementById('b2b-desc').value.trim() || '—',
+    offerings:        getSelectedTags() || '—',
+    offerings_other:  document.getElementById('b2b-offerings-other').value.trim() || '—',
+    price_range:      document.getElementById('b2b-price').value || '—',
+    min_stay:         document.getElementById('b2b-minstay').value || '—',
+    best_season:      document.getElementById('b2b-season').value || '—',
+    certifications:   document.getElementById('b2b-cert').value.trim() || '—',
+    website:          document.getElementById('b2b-website').value.trim() || '—',
+    instagram:        document.getElementById('b2b-ig').value.trim(),
+    other_social:     document.getElementById('b2b-social2').value.trim() || '—',
+    contact_name:     document.getElementById('b2b-contact').value.trim(),
+    role:             document.getElementById('b2b-role').value || '—',
+    contact_email:    document.getElementById('b2b-email').value.trim(),
+    contact_phone:    document.getElementById('b2b-phone').value.trim(),
+    submitted_at:     new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
   };
 
   /* 1. EmailJS */
   await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_B2B_TEMPLATE, {
-    space_name:   data.space_name,
-    space_type:   data.space_type,
-    state:        data.state,
-    capacity:     data.capacity,
-    description:  data.description,
-    offerings:    data.offerings,
+    space_name:      data.space_name,
+    space_type:      data.space_type,
+    state:           data.state,
+    capacity:        data.capacity,
+    description:     data.description,
+    offerings:       data.offerings,
     offerings_other: data.offerings_other,
-    price_range:  data.price_range,
-    min_stay:     data.min_stay,
-    best_season:  data.best_season,
-    certifications: data.certifications,
-    website:      data.website,
-    instagram:    data.instagram,
-    other_social: data.other_social,
-    contact_name: data.contact_name,
-    role:         data.role,
-    contact_email:data.contact_email,
-    contact_phone:data.contact_phone,
-    submitted_at: data.submitted_at
+    price_range:     data.price_range,
+    min_stay:        data.min_stay,
+    best_season:     data.best_season,
+    certifications:  data.certifications,
+    website:         data.website,
+    instagram:       data.instagram,
+    other_social:    data.other_social,
+    contact_name:    data.contact_name,
+    role:            data.role,
+    contact_email:   data.contact_email,
+    contact_phone:   data.contact_phone,
+    submitted_at:    data.submitted_at
   });
 
   /* 2. Google Apps Script */
-  await fetch(APPS_SCRIPT_URL, {
+  fetch(APPS_SCRIPT_URL, {
     method: 'POST',
     mode:   'no-cors',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify({ sheet: 'B2B Leads', ...data })
-  });
+  }).catch(e => console.warn('Apps Script error:', e));
 
-  /* 3. WhatsApp — notify your team of new listing application */
-  const waText = encodeURIComponent(
-    `New listing application received! 🌿\n\n` +
-    `Space: ${data.space_name} (${data.space_type})\n` +
-    `Location: ${data.state}\n` +
-    `Instagram: @${data.instagram}\n` +
-    `Contact: ${data.contact_name} — ${data.contact_phone}\n` +
-    `Email: ${data.contact_email}\n\n` +
-    `Submitted: ${data.submitted_at}`
-  );
-  window.open(`https://wa.me/${WA_NUMBER}?text=${waText}`, '_blank');
+  /* 3. WhatsApp — team notification */
+  if (waWin) {
+    const waText = encodeURIComponent(
+      `New listing application received! 🌿\n\n` +
+      `Space: ${data.space_name} (${data.space_type})\n` +
+      `Location: ${data.state}\n` +
+      `Instagram: @${data.instagram}\n` +
+      `Contact: ${data.contact_name} — ${data.contact_phone}\n` +
+      `Email: ${data.contact_email}\n\n` +
+      `Submitted: ${data.submitted_at}`
+    );
+    waWin.location.href = `https://wa.me/${WA_NUMBER}?text=${waText}`;
+  }
 }
 </script>
 </body>
