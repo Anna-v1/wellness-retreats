@@ -957,7 +957,7 @@ async function handleB2C(waWin){
     guests:           document.getElementById('b2c-guests').value,
     travel_dates:     document.getElementById('b2c-dates').value.trim(),
     budget:           document.getElementById('b2c-budget').value,
-    notes:            document.getElementById('b2c-notes').value.trim() || '—',
+    notes:            document.getElementById('b2c-notes').value.trim() || '-',
     submitted_at:     new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
     source:           'Website Form',
   };
