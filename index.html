@@ -959,6 +959,7 @@ async function handleB2C(waWin){
     budget:           document.getElementById('b2c-budget').value,
     notes:            document.getElementById('b2c-notes').value.trim() || '—',
     submitted_at:     new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+    source:           'Website Form',
   };
 
   /* 1. Fire Apps Script via hidden form — most reliable cross-origin method */
